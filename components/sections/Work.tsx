@@ -11,7 +11,7 @@ const projects = [
         name: "SwayZest",
         tags: ["UI Design", "Branding"],
         description: "Designed a modern brand identity and clean user interface for a smart vending machine solution.",
-        image: "/images/work/swayzest.png", 
+        image: "/images/work/SwayZest.png", 
         // 👇 PASTE LINK HERE
         link: "https://www.behance.net/gallery/227257103/SwayZest-A-vending-machine-solution", 
     },

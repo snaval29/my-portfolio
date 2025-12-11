@@ -3,6 +3,43 @@ import { motion } from "framer-motion";
 import { ArrowRight, Mail, Linkedin, Twitter, Instagram, Dribbble, Github } from "lucide-react"; 
 import { ContactBackground } from "../ui/ContactBackground"; 
 
+// ============================================================================
+// 🔗 SOCIAL LINKS CONFIGURATION
+// Paste your actual profile URLs inside the quotes below.
+// ============================================================================
+const socialLinks = [
+    { 
+        icon: Dribbble, 
+        href: "https://dribbble.com/snaval", 
+        label: "Dribbble" 
+    },
+    { 
+        icon: Linkedin, 
+        href: "https://www.linkedin.com/in/snaval29/", 
+        label: "LinkedIn" 
+    },
+    { 
+        icon: Twitter, 
+        href: "https://x.com/snaval001", 
+        label: "Twitter" 
+    },
+    { 
+        icon: Instagram, 
+        href: "https://www.instagram.com/naval_sha.rma/", 
+        label: "Instagram" 
+    },
+    { 
+        icon: Github, 
+        href: "https://github.com/snaval29", 
+        label: "GitHub" 
+    },
+    { 
+        icon: Mail, 
+        href: "mailto:snaval294@gmail.com", 
+        label: "Email" 
+    },
+];
+
 export const Contact = () => {
   return (
     <section id="contact" className="relative w-full pt-32 pb-16 px-4 md:px-10 overflow-hidden bg-transparent scroll-mt-32">
@@ -47,10 +84,23 @@ export const Contact = () => {
                     className="rounded-[24px] border border-white/10 bg-neutral-900/80 p-8 backdrop-blur-xl shadow-2xl"
                 >
                     <h4 className="text-sm font-bold text-neutral-400 uppercase tracking-wider mb-6">Find me on</h4>
-                    <div className="grid grid-cols-3 gap-3">
-                        {[Dribbble, Linkedin, Twitter, Instagram, Github, Mail].map((Icon, i) => (
-                            <a key={i} href="#" className="group flex aspect-square items-center justify-center rounded-2xl bg-neutral-800/50 border border-white/5 transition-all duration-300 hover:bg-white hover:scale-105 hover:shadow-lg hover:shadow-amber-500/20">
-                                <Icon size={24} className="text-neutral-400 transition-colors group-hover:text-black" />
+                    
+                    {/* ICON GRID */}
+                    <div className="grid grid-cols-3 gap-4">
+                        {socialLinks.map((item, i) => (
+                            <a 
+                                key={i} 
+                                href={item.href} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                aria-label={item.label}
+                                className="group flex aspect-square items-center justify-center rounded-2xl bg-neutral-800/50 border border-white/5 transition-all duration-300 hover:bg-white hover:border-white hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                            >
+                                {/* ICON ANIMATION: Scale up & Tilt on Hover */}
+                                <item.icon 
+                                    size={32} // Increased Size
+                                    className="text-neutral-400 transition-all duration-300 group-hover:scale-125 group-hover:-rotate-6 group-hover:text-black" 
+                                />
                             </a>
                         ))}
                     </div>
@@ -80,7 +130,6 @@ export const Contact = () => {
                 viewport={{ once: true }}
                 className="lg:col-span-3 rounded-[24px] border border-white/10 bg-neutral-900/80 p-8 md:p-10 backdrop-blur-xl shadow-2xl"
             >
-                {/* FIX: Reverted to simple flex-col stack (Vertical Layout) */}
                 <form className="flex flex-col gap-6">
                     
                     <div className="space-y-2">

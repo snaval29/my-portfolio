@@ -50,7 +50,7 @@ export const Hero = () => {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="mt-10 text-lg text-neutral-400 md:text-xl max-w-2xl font-light leading-relaxed"
         >
-          Simplify decisions, amplify vibes. A <span className="text-white font-medium">Vibe Coder</span> crafting experiences that make every pixel count toward the life you want.
+          Simplify decisions, improve usability. Blending <span className="text-white font-medium">Design</span> and code to create meaningful user experiences
         </motion.p>
 
         {/* ACTION BUTTONS */}

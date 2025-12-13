@@ -3,53 +3,56 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 // ============================================================================
-// 🔧 CONFIGURATION ZONE - UPDATE YOUR PATHS HERE
+// 🔧 CONFIGURATION ZONE - UPDATED FOR MOBILE RESPONSIVENESS
 // ============================================================================
 const bentoItems = [
   // 1. The Main Highlight (Big Square)
   {
     id: 1,
     type: "video",
-    src: "/videos/demo.mp4", // Replace with your file path
+    src: "/videos/demo.mp4",
     alt: "Main Highlight",
-    className: "md:col-span-2 md:row-span-2", 
+    // FIX: Added 'aspect-video' for mobile so it keeps its shape
+    className: "aspect-video md:aspect-auto md:col-span-2 md:row-span-2", 
   },
   // 2. The Video Reel (Tall Vertical)
   {
     id: 2,
     type: "image",
-    src: "/images/work/1.webp",        // Replace with your video path
+    src: "/images/work/1.webp",
     alt: "Motion Reel",
-    className: "md:col-span-1 md:row-span-2",
+    // FIX: Added 'aspect-[9/16]' (Tik-Tok style vertical) for mobile
+    className: "aspect-[9/16] md:aspect-auto md:col-span-1 md:row-span-2",
   },
   // 3. Small Square 1
   {
     id: 3,
     type: "image",
-    src: "/images/work/2.jpg", // Replace with your file path
+    src: "/images/work/2.jpg",
     alt: "Detail Shot 1",
-    className: "md:col-span-1 md:row-span-1",
+    // FIX: Added 'aspect-square' for mobile
+    className: "aspect-square md:aspect-auto md:col-span-1 md:row-span-1",
   },
   // 4. Small Square 2
   {
     id: 4,
     type: "image",
-    src: "/images/work/3.webp", // Replace with your file path
+    src: "/images/work/3.webp",
     alt: "Detail Shot 2",
-    className: "md:col-span-1 md:row-span-1",
+    className: "aspect-square md:aspect-auto md:col-span-1 md:row-span-1",
   },
   // 5. Small Square 3
   {
     id: 5,
     type: "image",
-    src: "/images/work/4.webp", // Replace with your file path
+    src: "/images/work/4.webp",
     alt: "Detail Shot 3",
-    className: "md:col-span-1 md:row-span-1",
+    className: "aspect-square md:aspect-auto md:col-span-1 md:row-span-1",
   },
 ];
 
 // ============================================================================
-// 🎨 COMPONENT CODE (NO NEED TO TOUCH BELOW)
+// 🎨 COMPONENT CODE
 // ============================================================================
 export const BentoGallery = () => {
   return (
@@ -66,7 +69,9 @@ export const BentoGallery = () => {
         </div>
 
         {/* The Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[200px] md:auto-rows-[250px]">
+        {/* FIX: Changed 'auto-rows-[200px]' to 'auto-rows-auto' for mobile */}
+        {/* This tells the grid: "On mobile, let the item decide its height. On Laptop, force 250px rows." */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-auto md:auto-rows-[250px]">
           
           {bentoItems.map((item, index) => (
             <motion.div
@@ -86,6 +91,8 @@ export const BentoGallery = () => {
                   muted
                   loop
                   playsInline
+                  // FIX: Changed 'object-cover' to conditional object fit if you really want NO cropping
+                  // But usually 'object-cover' is better if aspect-ratio is set correctly above
                   className="h-full w-full object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-100"
                 />
               ) : (
@@ -97,7 +104,6 @@ export const BentoGallery = () => {
                 />
               )}
               
-              {/* Hover Overlay (Adds a subtle flash) */}
               <div className="absolute inset-0 bg-white/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none" />
               
             </motion.div>

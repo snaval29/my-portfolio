@@ -19,7 +19,7 @@ export const About = () => {
             color: "text-cyan-400",
             bg: "bg-cyan-500/10",
             border: "border-cyan-500/20",
-            description: "Building fast, aesthetic UIs with modern tech (React, Next.js, Framer Motion).",
+            description: "Using AI tools to assist with design-to-code exploration and rapid prototyping.",
         },
         { 
             title: "Creative Catalyst", 

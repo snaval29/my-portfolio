@@ -54,7 +54,7 @@ export const About = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}
                     >
-                        The Anatomy of a Vibe Coder
+                        LEARNING BY DOING
                     </motion.h2>
                     
                     <motion.h3 

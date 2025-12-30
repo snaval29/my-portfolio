@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // The symbols we will emit
@@ -10,46 +10,49 @@ interface Note {
   id: number;
   x: number;
   y: number;
-  targetX: number; // Final X position
-  targetY: number; // Final Y position
+  targetX: number;
+  targetY: number;
   symbol: string;
   color: string;
   rotation: number;
 }
 
 export const MusicCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [notes, setNotes] = useState<Note[]>([]);
-  const lastSpawn = useRef({ x: 0, y: 0, time: 0 });
+  // 1. REF for the main cursor (No Re-renders)
+  const cursorDotRef = useRef<HTMLDivElement>(null);
   
-  // Clean up old notes automatically
-  useEffect(() => {
-    if (notes.length > 20) {
-        setNotes((prev) => prev.slice(1));
-    }
-  }, [notes]);
+  // 2. STATE for the Notes (This is okay because notes don't update every millisecond)
+  const [notes, setNotes] = useState<Note[]>([]);
+  
+  // 3. REF to track spawn timing without triggering re-renders
+  const lastSpawn = useRef({ x: 0, y: 0, time: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      // A. Move the Main Dot DIRECTLY (Zero React overhead)
+      if (cursorDotRef.current) {
+        cursorDotRef.current.style.left = `${e.clientX}px`;
+        cursorDotRef.current.style.top = `${e.clientY}px`;
+      }
 
-      // SPAWN LOGIC
+      // B. Check if we should spawn a note
       const now = Date.now();
       const dist = Math.hypot(e.clientX - lastSpawn.current.x, e.clientY - lastSpawn.current.y);
 
-      // Trigger if moved more than 20px (slightly more sensitive now)
-      if (dist > 20 || (now - lastSpawn.current.time > 100 && dist > 5)) {
+      // Trigger if moved more than 30px (Increased slightly for better performance)
+      if (dist > 30 || (now - lastSpawn.current.time > 100 && dist > 10)) {
         
-        // 1. Calculate Random Direction (0 to 360 degrees)
+        // Calculate physics
         const angle = Math.random() * Math.PI * 2; 
-        const distance = 80 + Math.random() * 50; // Spread distance (80px to 130px)
-
-        // 2. Calculate Final Destination
+        const distance = 80 + Math.random() * 50; 
         const targetX = e.clientX + Math.cos(angle) * distance;
         const targetY = e.clientY + Math.sin(angle) * distance;
 
+        // Use 'now' plus random for a truly unique key to prevent collisions
+        const uniqueId = now + Math.random();
+
         const newNote: Note = {
-          id: now,
+          id: uniqueId, // ✅ Fixes "Duplicate Key" error
           x: e.clientX,
           y: e.clientY,
           targetX: targetX,
@@ -66,18 +69,15 @@ export const MusicCursor = () => {
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, []); // Empty dependency array = Runs once = No loops
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden">
       
-      {/* 1. The Main Cursor (Dot) */}
+      {/* 1. The Main Cursor (Controlled by Ref) */}
       <div 
-        className="absolute w-3 h-3 bg-white rounded-full mix-blend-difference"
-        style={{ 
-            left: mousePosition.x - 6, 
-            top: mousePosition.y - 6,
-        }}
+        ref={cursorDotRef}
+        className="absolute w-3 h-3 bg-white rounded-full mix-blend-difference -translate-x-1/2 -translate-y-1/2 will-change-transform"
       />
 
       {/* 2. The Bursting Notes */}
@@ -85,21 +85,20 @@ export const MusicCursor = () => {
         {notes.map((note) => (
           <motion.div
             key={note.id}
-            // Start at mouse position
             initial={{ opacity: 1, scale: 0.2, x: note.x, y: note.y }}
-            // Explode outward to targetX/Y
             animate={{ 
                 opacity: 0, 
                 scale: 1.5,
                 x: note.targetX, 
                 y: note.targetY, 
-                rotate: note.rotation + 180 // Spin as they fly out
+                rotate: note.rotation + 180 
             }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="absolute text-xl font-bold pointer-events-none select-none"
             style={{ color: note.color }}
             onAnimationComplete={() => {
+                // Cleanup note after animation finishes
                 setNotes((prev) => prev.filter((n) => n.id !== note.id));
             }}
           >

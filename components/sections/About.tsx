@@ -1,17 +1,20 @@
 "use client";
 import { motion } from "framer-motion";
 import { Zap, Feather, Code2 } from "lucide-react"; 
-import { AboutBackground } from "../ui/AboutBackground"; 
+import { AboutBackground } from "../ui/AboutBackground";
+// ✅ Import Atropos
+import Atropos from 'atropos/react';
+import 'atropos/css';
 
 export const About = () => {
     const skills = [
         { 
             title: "Design Intuition", 
             icon: Feather, 
-            color: "text-amber-500",
+            color: "text-amber-400",
             bg: "bg-amber-500/10",
             border: "border-amber-500/20",
-            description: "Turning raw concepts into interactive, high-fidelity experiences (Figma, Prototyping).",
+            description: "Turning raw chaos into clean, high-fidelity interfaces in Figma.",
         },
         { 
             title: "Vibe Coding", 
@@ -19,101 +22,121 @@ export const About = () => {
             color: "text-cyan-400",
             bg: "bg-cyan-500/10",
             border: "border-cyan-500/20",
-            description: "Using AI tools to assist with design-to-code exploration and rapid prototyping.",
+            description: "Bridging the gap between design and React with AI-assisted workflows.",
         },
         { 
-            title: "Creative Catalyst", 
+            title: "Sonic Thinking", 
             icon: Zap, 
             color: "text-purple-400",
             bg: "bg-purple-500/10",
             border: "border-purple-500/20",
-            description: "Music, sketching, and curiosity—the essential fuel for original design thinking.",
+            description: "Rhythm and flow aren't just for music—they define good UX.",
         },
     ];
 
     return (
-        <motion.section 
-            id="about" 
-            // CHANGE: Added 'pt-24' (96px) for top spacing. Kept 'pb-32'.
-            className="relative w-full pt-24 pb-32 scroll-mt-32 overflow-hidden" 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-        >
+        <section id="about" className="relative w-full py-32 overflow-hidden bg-neutral-950">
             
+            {/* Background Text */}
+            <div className="absolute top-10 left-0 w-full overflow-hidden pointer-events-none opacity-[0.03]">
+                <h1 className="text-[20vw] font-bold text-white whitespace-nowrap leading-none tracking-tighter">
+                    THE PROCESS
+                </h1>
+            </div>
+
             <AboutBackground /> 
 
-            {/* Content Container */}
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-10 flex flex-col gap-16 lg:flex-row lg:items-start"> 
+            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
                 
-                {/* Left Column: Typography */}
-                <div className="lg:w-1/2 pt-8">
-                    <motion.h2 
-                        className="text-sm font-bold tracking-[0.2em] text-amber-500 uppercase"
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        LEARNING BY DOING
-                    </motion.h2>
+                <div className="grid lg:grid-cols-12 gap-16 items-center">
                     
-                    <motion.h3 
-                        className="mt-6 text-5xl md:text-6xl font-semibold tracking-tight text-white leading-[1.1]"
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.3 }}
-                    >
-                        I build experiences that <span className="text-amber-500">feel alive.</span>
-                    </motion.h3>
+                    {/* --- LEFT: Bio (Same as before) --- */}
+                    <div className="lg:col-span-7 flex flex-col gap-8">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <span className="inline-block py-1 px-3 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-xs font-bold tracking-widest uppercase mb-6">
+                                Who I Am
+                            </span>
+                            <h2 className="text-5xl md:text-7xl font-semibold text-white leading-[1.05] tracking-tight">
+                                Design isn't just <br />
+                                <span className="text-neutral-600">how it looks.</span>
+                            </h2>
+                        </motion.div>
 
-                    <motion.div 
-                        className="mt-10 space-y-6 text-lg text-neutral-400 leading-relaxed"
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4 }}
-                    >
-                        <p>
-                            <strong className="text-white">Naval Sharma</strong> is a UI/UX Designer who bridges the gap between vision and execution. I specialize in blending sharp design principles with <strong className="text-white">front-end capabilities</strong> to deliver tangible, flawlessly executed digital experiences.
-                        </p>
-                        <p>
-                            My work is driven by a dual passion for <strong className="text-white">rhythm</strong> and <strong className="text-white">structure</strong>. This unique combination fuels my approach to problem-solving and ensures my designs are always infused with life.
-                        </p>
-                    </motion.div>
-                </div>
+                        <motion.div 
+                            className="text-lg md:text-xl text-neutral-400 font-light leading-relaxed max-w-2xl space-y-6"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <p>
+                                I'm <span className="text-white font-medium">Naval Sharma</span>. I don't just push pixels; I build systems. 
+                                My work sits at the intersection of <span className="text-amber-500">aesthetic precision</span> and <span className="text-cyan-400">engineering reality</span>.
+                            </p>
+                            <p>
+                                Whether it's composing a melody or refactoring a component, I believe everything has a rhythm. 
+                                My goal is to make digital experiences feel less like "using a computer" and more like an extension of thought.
+                            </p>
+                        </motion.div>
+                    </div>
 
-                {/* Right Column: Solid Cards */}
-                <div className="lg:w-1/2">
-                    <div className="grid grid-cols-1 gap-6">
+                    {/* --- RIGHT: 3D ATROPOS CARDS --- */}
+                    <div className="lg:col-span-5 flex flex-col gap-6">
                         {skills.map((skill, index) => (
                             <motion.div
                                 key={index}
-                                className="group relative overflow-hidden rounded-[24px] border border-white/5 bg-neutral-900 p-8 transition-all duration-300 hover:border-white/10 hover:shadow-2xl hover:translate-y-[-4px]"
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                                initial={{ opacity: 0, x: 50 }}
+                                whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
+                                transition={{ delay: 0.3 + (index * 0.1) }}
+                                className="h-40 w-full" // Fixed height for consistency
                             >
-                                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                                <Atropos
+                                    className="w-full h-full rounded-[24px]"
+                                    activeOffset={40} // How much it tilts
+                                    shadowScale={1.05}
+                                >
+                                    {/* The Card Background */}
+                                    <div className="w-full h-full p-6 bg-neutral-900/80 border border-white/5 rounded-[24px] flex items-center gap-5 relative overflow-hidden group">
+                                        
+                                        {/* Layer 0: Background Gradient (Static) */}
+                                        <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-gradient-to-r ${skill.color.replace('text-', 'from-')} to-transparent`} />
 
-                                <div className="relative z-10 flex flex-col sm:flex-row gap-6 sm:items-start">
-                                    <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border ${skill.bg} ${skill.border} ${skill.color}`}>
-                                        <skill.icon size={26} />
+                                        {/* Layer 1: Icon (Floats Highest) */}
+                                        <div 
+                                            data-atropos-offset="5" // Higher number = closer to user
+                                            className={`p-4 rounded-2xl bg-neutral-950 border border-white/10 ${skill.color} shadow-2xl`}
+                                        >
+                                            <skill.icon size={28} />
+                                        </div>
+
+                                        {/* Layer 2: Text (Floats in Middle) */}
+                                        <div data-atropos-offset="2">
+                                            <h3 className="text-xl font-bold text-white mb-2">
+                                                {skill.title}
+                                            </h3>
+                                            <p className="text-neutral-400 text-sm leading-relaxed">
+                                                {skill.description}
+                                            </p>
+                                        </div>
+
+                                        {/* Layer 3: Decorative Blur (Deep Background) */}
+                                        <div 
+                                            data-atropos-offset="-5" // Negative = sinks into background
+                                            className={`absolute -right-10 -bottom-10 w-32 h-32 rounded-full ${skill.bg} blur-[40px] opacity-50`} 
+                                        />
                                     </div>
-                                    
-                                    <div>
-                                        <h4 className="text-xl font-bold text-white group-hover:text-amber-500 transition-colors">
-                                            {skill.title}
-                                        </h4>
-                                        <p className="mt-2 text-base text-neutral-400 leading-relaxed">
-                                            {skill.description}
-                                        </p>
-                                    </div>
-                                </div>
+                                </Atropos>
                             </motion.div>
                         ))}
                     </div>
+
                 </div>
             </div>
-        </motion.section>
+        </section>
     );
 };

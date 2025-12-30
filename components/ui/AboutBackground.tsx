@@ -1,49 +1,95 @@
 "use client";
-import { motion } from "framer-motion";
+import { useCallback } from "react";
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim"; 
+import type { Engine } from "tsparticles-engine";
 
 export const AboutBackground = () => {
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+  }, []);
+
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden bg-neutral-950">
+    <div className="absolute inset-0 z-0 bg-neutral-950">
       
-      {/* 1. Base Gradient (Subtle Vignette to create depth) */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_0%,transparent_100%)]" />
-
-      {/* 2. Beam 1: The Main Scanner (Golden/Warm) - INCREASED BRIGHTNESS */}
-      <motion.div
-        animate={{ 
-          x: ["-100%", "200%"], // Wide range to ensure it crosses the screen
+      {/* 1. The Particle Network (The "Code" Vibe) */}
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        className="absolute inset-0 h-full w-full"
+        options={{
+          fullScreen: { enable: false },
+          background: {
+            color: { value: "transparent" },
+          },
+          fpsLimit: 120,
+          // 🛑 INTERACTIVITY DISABLED: This prevents conflict with your Music Cursor
+          interactivity: {
+            events: {
+              onHover: { enable: false },
+              onClick: { enable: false },
+              resize: true,
+            },
+          },
+          particles: {
+            // ✅ THEME COLOR: Amber-400 (Gold)
+            color: {
+              value: "#fbbf24", 
+            },
+            // The connecting lines (The "System" Vibe)
+            links: {
+              color: "#fbbf24",
+              distance: 150,
+              enable: true,
+              opacity: 0.08, // Very subtle, barely visible lines
+              width: 1,
+            },
+            collisions: {
+              enable: false,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: {
+                default: "bounce",
+              },
+              random: true,
+              speed: 0.6, // Slow, premium float speed
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 900, // Spreads them out so it's not cluttered
+              },
+              value: 50, // Perfect amount for a background
+            },
+            opacity: {
+              value: 0.3, 
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              value: { min: 1, max: 3 },
+            },
+          },
+          detectRetina: true,
         }}
-        transition={{ 
-          duration: 15, // Faster to be easily noticeable
-          repeat: Infinity, 
-          ease: "linear",
-        }}
-        // FIX: Using brighter amber-500/40 and mix-blend-plus-lighter
-        className="absolute top-0 h-full w-[150px] bg-gradient-to-r from-transparent via-amber-500/40 to-transparent blur-2xl -skew-x-12 opacity-70 mix-blend-plus-lighter"
       />
 
-      {/* 3. Beam 2: The Secondary Scanner (White/Cool) - INCREASED BRIGHTNESS */}
-      <motion.div
-        animate={{ 
-          x: ["200%", "-100%"], 
+      {/* 2. Film Grain Texture (The "Designer" Vibe) */}
+      {/* Adds a high-end textured finish so it doesn't look like a cheap screensaver */}
+      <div 
+        className="absolute inset-0 opacity-[0.04] pointer-events-none z-10 mix-blend-overlay"
+        style={{ 
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}
-        transition={{ 
-          duration: 20, 
-          repeat: Infinity, 
-          ease: "linear",
-          delay: 2
-        }}
-        // FIX: Using white/20 for contrast
-        className="absolute top-0 h-full w-[250px] bg-gradient-to-r from-transparent via-white/20 to-transparent blur-3xl -skew-x-12 opacity-50 mix-blend-overlay"
       />
-
-      {/* 4. Ambient Spotlights (Static Glows) */}
-      {/* Top Left Glow */}
-      <div className="absolute -left-20 -top-20 h-[400px] w-[400px] bg-amber-600/20 blur-[100px] rounded-full opacity-60" />
       
-      {/* Bottom Right Glow */}
-      <div className="absolute -right-20 -bottom-20 h-[400px] w-[400px] bg-amber-800/20 blur-[100px] rounded-full opacity-60" />
-
+      {/* 3. Vignette Overlay (Focus) */}
+      {/* Darkens the corners to keep focus on your text */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] z-20" />
     </div>
   );
 };

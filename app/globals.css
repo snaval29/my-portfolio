@@ -35,3 +35,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* 🚀 PERFORMANCE FIX: Disable heavy blurs on mobile */
+@media (max-width: 768px) {
+  .backdrop-blur-xl, 
+  .backdrop-blur-lg, 
+  .backdrop-blur-md, 
+  .backdrop-blur-sm {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    /* Fallback: Slightly more opaque background so text is readable */
+    background-color: rgba(10, 10, 10, 0.95) !important; 
+  }
+}
+
+/* Enable hardware acceleration for animations */
+.will-change-transform {
+  will-change: transform;
+  transform: translateZ(0);
+}
+.atropos-inner {
+    border-radius: 24px !important; /* Matches your theme */
+}
+.atropos-highlight {
+    background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1), transparent 50%) !important;
+}

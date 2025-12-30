@@ -3,55 +3,54 @@ import { motion } from "framer-motion";
 
 export const HeroBackground = () => {
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden bg-[#050505]">
+    <div className="absolute inset-0 z-0 overflow-hidden bg-[#0a0a0a]">
       
-      {/* =========================================================
-          LAYER 1: THE LIGHT SOURCE (Behind the Glass)
-          We need deep, moving colors for the glass to blur.
-         ========================================================= */}
-      
-      {/* Moving Gold Blob (Left) */}
+      {/* OPTIMIZATION TIP: 
+        We use 'radial-gradient' here instead of 'bg-amber-500 + blur-3xl'.
+        Gradients are rendered natively by the GPU and are much faster than blur filters.
+      */}
+
+      {/* 1. Moving Gold Light (Left) - GPU Accelerated */}
       <motion.div
+        initial={{ opacity: 0.5, scale: 1 }}
         animate={{ 
-          x: ["-20%", "20%", "-20%"],
-          y: ["0%", "30%", "0%"],
-          scale: [1, 1.2, 1]
+          scale: [1, 1.4, 1],
+          opacity: [0.5, 0.8, 0.5],
         }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-0 left-0 w-[800px] h-[800px] bg-amber-600/30 rounded-full blur-[120px] opacity-60 mix-blend-screen"
-      />
+        transition={{ 
+          duration: 10, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }}
+        // Using translateZ(0) forces hardware acceleration
+        style={{ transform: "translateZ(0)" }}
+        className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full mix-blend-screen will-change-transform"
+      >
+         {/* Native Gradient = No Blur Lag */}
+         <div className="w-full h-full bg-[radial-gradient(circle,rgba(245,158,11,0.15)_0%,transparent_70%)]" />
+      </motion.div>
 
-      {/* Moving Amber Blob (Right) */}
+      {/* 2. Moving Amber Light (Right) - GPU Accelerated */}
       <motion.div
+        initial={{ opacity: 0.5, scale: 1 }}
         animate={{ 
-          x: ["20%", "-20%", "20%"],
-          y: ["0%", "-30%", "0%"],
-          scale: [1.2, 1, 1.2]
+          scale: [1, 1.3, 1],
+          opacity: [0.4, 0.7, 0.4],
         }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-0 right-0 w-[700px] h-[700px] bg-orange-500/20 rounded-full blur-[120px] opacity-50 mix-blend-screen"
-      />
-
-      {/* =========================================================
-          LAYER 2: THE FROSTED GLASS TEXTURE
-          This creates the "physical" feel of the material.
-         ========================================================= */}
-      
-      {/* Heavy Noise Overlay (The "Frost") */}
-      <div 
-        className="absolute inset-0 opacity-[0.07] mix-blend-overlay pointer-events-none z-10"
-        style={{ 
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        transition={{ 
+          duration: 12, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 2
         }}
-      />
+        style={{ transform: "translateZ(0)" }}
+        className="absolute -bottom-[20%] -right-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen will-change-transform"
+      >
+         <div className="w-full h-full bg-[radial-gradient(circle,rgba(217,119,6,0.15)_0%,transparent_70%)]" />
+      </motion.div>
 
-      {/* =========================================================
-          LAYER 3: THE GLASS STRUCTURE (Reflections & Edges)
-          This defines the "Panes" of glass.
-         ========================================================= */}
-
-      {/* The Vertical "Panes" (Sharp White Lines) */}
-      <div className="absolute inset-0 z-20 flex justify-center">
+      {/* 3. The Glass Grid (Lightweight CSS) */}
+      <div className="absolute inset-0 z-0 flex justify-center opacity-30">
         <div 
           className="absolute inset-0" 
           style={{
@@ -59,34 +58,29 @@ export const HeroBackground = () => {
               repeating-linear-gradient(
                 90deg,
                 transparent 0,
-                transparent 150px,
-                rgba(255, 255, 255, 0.03) 150px,
-                rgba(255, 255, 255, 0.03) 151px
+                transparent 100px,
+                rgba(255, 255, 255, 0.05) 100px,
+                rgba(255, 255, 255, 0.05) 101px
               )
             `,
-            maskImage: 'linear-gradient(to bottom, black 20%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 20%, transparent 100%)'
+            maskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)'
           }}
         />
       </div>
 
-      {/* The "Sheen" (Light reflecting off the surface) */}
-      {/* This moving gradient simulates light sweeping across the glass */}
+      {/* 4. The "Sheen" Animation (Simpler Transform) */}
       <motion.div
         animate={{ x: ["-100%", "200%"] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 z-20 w-[60%] -skew-x-12 opacity-20 pointer-events-none"
+        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 z-10 w-[50%] -skew-x-12 opacity-10 pointer-events-none will-change-transform"
         style={{
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)'
+            background: 'linear-gradient(90deg, transparent, white, transparent)'
         }}
       />
 
-      {/* =========================================================
-          LAYER 4: DEPTH & FOCUS
-         ========================================================= */}
-      
-      {/* Bottom Glow (Grounding the user) */}
-      <div className="absolute bottom-0 left-0 right-0 h-[50vh] bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent z-10" />
+      {/* 5. Vignette (Dark Edges) */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0a0a0a_100%)] pointer-events-none z-20" />
       
     </div>
   );

@@ -1,93 +1,128 @@
 "use client";
+
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-export const HeroBackground = () => {
+const random = (min: number, max: number) => Math.random() * (max - min) + min;
+
+// ============================================================================
+// COMPONENT 1: STAR (White)
+// ============================================================================
+const StarInstance = ({ onComplete }: { onComplete: () => void }) => {
+  const top = random(-40, -10); 
+  const left = random(-10, 110); 
+  
+  // Diagonal Angles
+  const rotation = Math.random() > 0.5 
+    ? random(30, 70) 
+    : random(110, 150);
+
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden bg-[#050505]">
-      
-      {/* =========================================================
-          LAYER 1: THE LIGHT SOURCE (Behind the Glass)
-          We need deep, moving colors for the glass to blur.
-         ========================================================= */}
-      
-      {/* Moving Gold Blob (Left) */}
+    <div 
+      className="absolute z-10"
+      style={{ 
+        top: `${top}%`, 
+        left: `${left}%`, 
+        transform: `rotate(${rotation}deg)` 
+      }}
+    >
       <motion.div
-        animate={{ 
-          x: ["-20%", "20%", "-20%"],
-          y: ["0%", "30%", "0%"],
-          scale: [1, 1.2, 1]
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: [0, 1, 1, 0], x: 500 }}
+        transition={{ 
+          duration: 1.5, // Adjusted for Linear speed
+          ease: "linear" // <--- CONSTANT SPEED (No acceleration)
         }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-0 left-0 w-[800px] h-[800px] bg-amber-600/30 rounded-full blur-[120px] opacity-60 mix-blend-screen"
-      />
-
-      {/* Moving Amber Blob (Right) */}
-      <motion.div
-        animate={{ 
-          x: ["20%", "-20%", "20%"],
-          y: ["0%", "-30%", "0%"],
-          scale: [1.2, 1, 1.2]
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-0 right-0 w-[700px] h-[700px] bg-orange-500/20 rounded-full blur-[120px] opacity-50 mix-blend-screen"
-      />
-
-      {/* =========================================================
-          LAYER 2: THE FROSTED GLASS TEXTURE
-          This creates the "physical" feel of the material.
-         ========================================================= */}
-      
-      {/* Heavy Noise Overlay (The "Frost") */}
-      <div 
-        className="absolute inset-0 opacity-[0.07] mix-blend-overlay pointer-events-none z-10"
-        style={{ 
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* =========================================================
-          LAYER 3: THE GLASS STRUCTURE (Reflections & Edges)
-          This defines the "Panes" of glass.
-         ========================================================= */}
-
-      {/* The Vertical "Panes" (Sharp White Lines) */}
-      <div className="absolute inset-0 z-20 flex justify-center">
-        <div 
-          className="absolute inset-0" 
-          style={{
-            backgroundImage: `
-              repeating-linear-gradient(
-                90deg,
-                transparent 0,
-                transparent 150px,
-                rgba(255, 255, 255, 0.03) 150px,
-                rgba(255, 255, 255, 0.03) 151px
-              )
-            `,
-            maskImage: 'linear-gradient(to bottom, black 20%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 20%, transparent 100%)'
-          }}
-        />
-      </div>
-
-      {/* The "Sheen" (Light reflecting off the surface) */}
-      {/* This moving gradient simulates light sweeping across the glass */}
-      <motion.div
-        animate={{ x: ["-100%", "200%"] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 z-20 w-[60%] -skew-x-12 opacity-20 pointer-events-none"
-        style={{
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)'
-        }}
-      />
-
-      {/* =========================================================
-          LAYER 4: DEPTH & FOCUS
-         ========================================================= */}
-      
-      {/* Bottom Glow (Grounding the user) */}
-      <div className="absolute bottom-0 left-0 right-0 h-[50vh] bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent z-10" />
-      
+        onAnimationComplete={onComplete}
+      >
+        <div className="h-[2px] w-[100px] bg-gradient-to-r from-transparent via-white to-transparent shadow-[0_0_15px_white]" />
+      </motion.div>
     </div>
   );
 };
+
+// ============================================================================
+// COMPONENT 2: METEOR (Colored)
+// ============================================================================
+const MeteorInstance = ({ onComplete }: { onComplete: () => void }) => {
+  const top = random(-50, -20);
+  const left = random(-20, 120);
+  
+  const rotation = Math.random() > 0.5 
+    ? random(40, 60)
+    : random(120, 140);
+
+  return (
+    <div 
+      className="absolute z-10"
+      style={{ 
+        top: `${top}%`, 
+        left: `${left}%`, 
+        transform: `rotate(${rotation}deg)` 
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: [0, 1, 1, 0], x: 700 }}
+        transition={{ 
+          duration: 1.2, 
+          ease: "linear" // <--- CONSTANT SPEED
+        }}
+        onAnimationComplete={onComplete}
+      >
+        <div className="h-[4px] w-[180px] rounded-full bg-gradient-to-r from-transparent via-purple-400 to-pink-500 shadow-[0_0_25px_rgba(168,85,247,0.8)]" />
+      </motion.div>
+    </div>
+  );
+};
+
+// ============================================================================
+// CONTROLLERS
+// ============================================================================
+const StarController = () => {
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    if (active) return;
+    const timeout = setTimeout(() => setActive(true), random(2000, 5000));
+    return () => clearTimeout(timeout);
+  }, [active]);
+  if (!active) return null;
+  return <StarInstance onComplete={() => setActive(false)} />;
+};
+
+const MeteorController = () => {
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    if (active) return;
+    const timeout = setTimeout(() => setActive(true), random(7000, 12000));
+    return () => clearTimeout(timeout);
+  }, [active]);
+  if (!active) return null;
+  return <MeteorInstance onComplete={() => setActive(false)} />;
+};
+
+// ============================================================================
+// MAIN EXPORT
+// ============================================================================
+export function HeroBackground() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden bg-neutral-950">
+      
+      {/* GRADIENTS */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_-10%,rgba(168,85,247,0.25),transparent_70%)] z-0" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_30%_at_50%_20%,rgba(236,72,153,0.18),transparent_65%)] z-0" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-0" />
+
+      {/* STARS LAYER */}
+      <div className="absolute inset-0 z-0">
+        <StarController />
+        <StarController />
+        <StarController />
+        <StarController />
+        
+        <MeteorController />
+        <MeteorController />
+      </div>
+    </div>
+  );
+}

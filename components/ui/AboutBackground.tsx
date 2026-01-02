@@ -12,7 +12,6 @@ export const AboutBackground = () => {
   return (
     <div className="absolute inset-0 z-0 bg-neutral-950">
       
-      {/* 1. The Particle Network (The "Code" Vibe) */}
       <Particles
         id="tsparticles"
         init={particlesInit}
@@ -23,7 +22,6 @@ export const AboutBackground = () => {
             color: { value: "transparent" },
           },
           fpsLimit: 120,
-          // 🛑 INTERACTIVITY DISABLED: This prevents conflict with your Music Cursor
           interactivity: {
             events: {
               onHover: { enable: false },
@@ -32,16 +30,16 @@ export const AboutBackground = () => {
             },
           },
           particles: {
-            // ✅ THEME COLOR: Amber-400 (Gold)
+            // UPDATED: Purple-400 (#c084fc) is lighter/brighter than before
             color: {
-              value: "#fbbf24", 
+              value: "#c084fc", 
             },
-            // The connecting lines (The "System" Vibe)
             links: {
-              color: "#fbbf24",
+              color: "#c084fc",
               distance: 150,
               enable: true,
-              opacity: 0.08, // Very subtle, barely visible lines
+              // UPDATED: Increased slightly from 0.1 to 0.15
+              opacity: 0.15, 
               width: 1,
             },
             collisions: {
@@ -54,18 +52,19 @@ export const AboutBackground = () => {
                 default: "bounce",
               },
               random: true,
-              speed: 0.6, // Slow, premium float speed
+              speed: 0.6, 
               straight: false,
             },
             number: {
               density: {
                 enable: true,
-                area: 900, // Spreads them out so it's not cluttered
+                area: 900,
               },
-              value: 50, // Perfect amount for a background
+              value: 50,
             },
             opacity: {
-              value: 0.3, 
+              // UPDATED: Increased from 0.3 to 0.5 for better visibility
+              value: 0.5, 
             },
             shape: {
               type: "circle",
@@ -78,8 +77,7 @@ export const AboutBackground = () => {
         }}
       />
 
-      {/* 2. Film Grain Texture (The "Designer" Vibe) */}
-      {/* Adds a high-end textured finish so it doesn't look like a cheap screensaver */}
+      {/* Film Grain Texture */}
       <div 
         className="absolute inset-0 opacity-[0.04] pointer-events-none z-10 mix-blend-overlay"
         style={{ 
@@ -87,8 +85,7 @@ export const AboutBackground = () => {
         }}
       />
       
-      {/* 3. Vignette Overlay (Focus) */}
-      {/* Darkens the corners to keep focus on your text */}
+      {/* Vignette Overlay */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] z-20" />
     </div>
   );

@@ -11,25 +11,28 @@ export const About = () => {
         { 
             title: "Design Intuition", 
             icon: Feather, 
-            color: "text-amber-400",
-            bg: "bg-amber-500/10",
-            border: "border-amber-500/20",
+            // THEME UPDATE: Purple
+            color: "text-purple-400",
+            bg: "bg-purple-500/10",
+            border: "border-purple-500/20",
             description: "Turning raw chaos into clean, high-fidelity interfaces in Figma.",
         },
         { 
             title: "Vibe Coding", 
             icon: Code2, 
-            color: "text-cyan-400",
-            bg: "bg-cyan-500/10",
-            border: "border-cyan-500/20",
+            // THEME UPDATE: Pink
+            color: "text-pink-400",
+            bg: "bg-pink-500/10",
+            border: "border-pink-500/20",
             description: "Bridging the gap between design and React with AI-assisted workflows.",
         },
         { 
             title: "Sonic Thinking", 
             icon: Zap, 
-            color: "text-purple-400",
-            bg: "bg-purple-500/10",
-            border: "border-purple-500/20",
+            // THEME UPDATE: Violet (to keep variety but stay in theme)
+            color: "text-violet-400",
+            bg: "bg-violet-500/10",
+            border: "border-violet-500/20",
             description: "Rhythm and flow aren't just for music—they define good UX.",
         },
     ];
@@ -50,14 +53,15 @@ export const About = () => {
                 
                 <div className="grid lg:grid-cols-12 gap-16 items-center">
                     
-                    {/* --- LEFT: Bio (Same as before) --- */}
+                    {/* --- LEFT: Bio --- */}
                     <div className="lg:col-span-7 flex flex-col gap-8">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                         >
-                            <span className="inline-block py-1 px-3 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-xs font-bold tracking-widest uppercase mb-6">
+                            {/* THEME UPDATE: Badge color */}
+                            <span className="inline-block py-1 px-3 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 text-xs font-bold tracking-widest uppercase mb-6">
                                 Who I Am
                             </span>
                             <h2 className="text-5xl md:text-7xl font-semibold text-white leading-[1.05] tracking-tight">
@@ -75,7 +79,7 @@ export const About = () => {
                         >
                             <p>
                                 I'm <span className="text-white font-medium">Naval Sharma</span>. I don't just push pixels; I build systems. 
-                                My work sits at the intersection of <span className="text-amber-500">aesthetic precision</span> and <span className="text-cyan-400">engineering reality</span>.
+                                My work sits at the intersection of <span className="text-purple-400">aesthetic precision</span> and <span className="text-pink-400">engineering reality</span>.
                             </p>
                             <p>
                                 Whether it's composing a melody or refactoring a component, I believe everything has a rhythm. 
@@ -93,28 +97,28 @@ export const About = () => {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.3 + (index * 0.1) }}
-                                className="h-40 w-full" // Fixed height for consistency
+                                className="h-40 w-full"
                             >
                                 <Atropos
                                     className="w-full h-full rounded-[24px]"
-                                    activeOffset={40} // How much it tilts
+                                    activeOffset={40}
                                     shadowScale={1.05}
                                 >
                                     {/* The Card Background */}
                                     <div className="w-full h-full p-6 bg-neutral-900/80 border border-white/5 rounded-[24px] flex items-center gap-5 relative overflow-hidden group">
                                         
-                                        {/* Layer 0: Background Gradient (Static) */}
+                                        {/* Layer 0: Background Gradient (Dynamic based on skill color) */}
                                         <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-gradient-to-r ${skill.color.replace('text-', 'from-')} to-transparent`} />
 
-                                        {/* Layer 1: Icon (Floats Highest) */}
+                                        {/* Layer 1: Icon */}
                                         <div 
-                                            data-atropos-offset="5" // Higher number = closer to user
+                                            data-atropos-offset="5"
                                             className={`p-4 rounded-2xl bg-neutral-950 border border-white/10 ${skill.color} shadow-2xl`}
                                         >
                                             <skill.icon size={28} />
                                         </div>
 
-                                        {/* Layer 2: Text (Floats in Middle) */}
+                                        {/* Layer 2: Text */}
                                         <div data-atropos-offset="2">
                                             <h3 className="text-xl font-bold text-white mb-2">
                                                 {skill.title}
@@ -124,9 +128,9 @@ export const About = () => {
                                             </p>
                                         </div>
 
-                                        {/* Layer 3: Decorative Blur (Deep Background) */}
+                                        {/* Layer 3: Decorative Blur */}
                                         <div 
-                                            data-atropos-offset="-5" // Negative = sinks into background
+                                            data-atropos-offset="-5"
                                             className={`absolute -right-10 -bottom-10 w-32 h-32 rounded-full ${skill.bg} blur-[40px] opacity-50`} 
                                         />
                                     </div>

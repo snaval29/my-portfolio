@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-// ✅ Import the new Music Cursor
-import { MusicCursor } from "@/components/ui/MusicCursor"; 
+import SmoothScroll from "@/components/ui/SmoothScroll";
+import { StardustCursor } from "@/components/ui/StardustCursor";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Nav.wav",
-  description: "Portfolio",
-  icons: { icon: '/logo.png' },
+  title: "Naval Sharma | UX Designer",
+  description: "Portfolio of Naval Sharma",
 };
 
 export default function RootLayout({
@@ -19,16 +27,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      {/* cursor-none hides the default pointer so you see our custom Dot + Notes */}
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-950 text-white cursor-none`}>
-        
-        {/* ✅ ADD MUSIC CURSOR (Hidden on Mobile) */}
+    <html lang="en" className="scroll-smooth">
+      <body
+        // ✅ UPDATED CLASS LIST:
+        // 1. md:cursor-none -> Hides cursor on general background
+        // 2. md:[&_a]:cursor-none -> Forces links (Nav bar) to have no cursor
+        // 3. md:[&_button]:cursor-none -> Forces buttons to have no cursor
+        // 4. md:[&_label]:cursor-none -> Forces form labels to have no cursor
+        className={`
+          ${inter.variable} ${jetbrainsMono.variable} 
+          antialiased bg-neutral-950 text-white 
+          selection:bg-purple-500/30 selection:text-white
+          md:cursor-none 
+          md:[&_a]:cursor-none 
+          md:[&_button]:cursor-none
+          md:[&_label]:cursor-none
+        `}
+      >
         <div className="hidden md:block">
-           <MusicCursor />
+            <StardustCursor />
         </div>
 
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

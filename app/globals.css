@@ -1,41 +1,50 @@
-@import "tailwindcss";
+/* 1. IMPORTS (Must be at the very top of the file) */
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
+@import "tailwindcss"; 
 
-/* app/globals.css */
+/* Note: If you are using Tailwind v3, replace '@import "tailwindcss";' with:
+   @tailwind base;
+   @tailwind components;
+   @tailwind utilities; 
+*/
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* ⬅️ FIX: Add this universal rule to prevent rendering gaps */
-html, body {
-  background-color: #0a0a0a !important; /* This matches neutral-950 */
-}
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --purple-glow: rgba(168, 85, 247, 0.3);
+  }
+
+  html, body {
+    background-color: #0a0a0a !important;
+    color: var(--foreground);
+    /* ✅ Applied General Sans for your personal branding */
+    font-family: 'General Sans', Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 2. SCROLLBAR (Space Theme Style) */
+::-webkit-scrollbar {
+  width: 8px;
 }
-/* 🚀 PERFORMANCE FIX: Disable heavy blurs on mobile */
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
+
+/* 3. PERFORMANCE FIXES (Prevents Lagging) */
+
+/* Disable heavy blurs on mobile/touch devices */
 @media (max-width: 768px) {
   .backdrop-blur-xl, 
   .backdrop-blur-lg, 
@@ -43,19 +52,57 @@ body {
   .backdrop-blur-sm {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    /* Fallback: Slightly more opaque background so text is readable */
-    background-color: rgba(10, 10, 10, 0.95) !important; 
+    /* High-contrast background for mobile readability */
+    background-color: rgba(10, 10, 10, 0.98) !important; 
   }
 }
 
-/* Enable hardware acceleration for animations */
-.will-change-transform {
-  will-change: transform;
+/* Hardware acceleration for carousel and animations */
+.transform-gpu {
   transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
+
+/* 4. COMPONENT & LIBRARY FIXES */
 .atropos-inner {
-    border-radius: 24px !important; /* Matches your theme */
+    border-radius: 24px !important;
 }
-.atropos-highlight {
-    background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1), transparent 50%) !important;
+
+/* Selection Highlight */
+::selection {
+  background: rgba(168, 85, 247, 0.3);
+  color: white;
+}
+
+/* 5. GLOBAL ANIMATIONS */
+
+/* Infinite Scroll (WorkCarousel) */
+@keyframes scroll-infinite {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-33.33%, 0, 0); }
+}
+
+.animate-scroll {
+  animation: scroll-infinite 40s linear infinite;
+}
+
+/* Blob Floating (Contact Background) */
+@keyframes blob-float-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(30px, -30px, 0) scale(1.1); }
+}
+
+.animate-blob-1 {
+  animation: blob-float-1 20s ease-in-out infinite;
+}
+
+@keyframes blob-float-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-30px, 30px, 0) scale(1.2); }
+}
+
+.animate-blob-2 {
+  animation: blob-float-2 25s ease-in-out infinite;
 }

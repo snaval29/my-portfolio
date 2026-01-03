@@ -3,7 +3,7 @@ import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Work } from "@/components/sections/Work";
 // ❌ REMOVED: import { BentoGallery } from "@/components/sections/BentoGallery";
-import { WorkCarousel } from "@/components/sections/WorkCarousel"; // ✅ NEW IMPORT
+import { WorkCarousel } from "@/components/sections/WorkCarousel";
 import { Contact } from "@/components/sections/Contact";
 
 export default function Home() {

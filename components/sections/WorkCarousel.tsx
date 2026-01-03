@@ -4,62 +4,46 @@ import Image from "next/image";
 import { WorkBackground } from "../ui/WorkBackground";
 
 // ============================================================================
-// 1. OPTIMIZED VIDEO COMPONENT
-// Handles play/pause based on visibility to save resources
+// 1. HIGH-PERFORMANCE VIDEO COMPONENT
 // ============================================================================
 const OptimizedVideo = ({ src }: { src: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const videoElement = videoRef.current;
-    if (!videoElement) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-    // Observer to detect if video is on screen
+    // Observer: Only play when 10% of the video is visible
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-            // If visible, set state to true, else false
-            setIsVisible(entry.isIntersecting);
+          if (entry.isIntersecting) {
+            // Play safely (catches abort errors if user scrolls fast)
+            video.play().catch(() => {}); 
+          } else {
+            video.pause();
+          }
         });
       },
-      { threshold: 0.5 } // Trigger when 50% visible
+      { threshold: 0.1 }
     );
 
-    observer.observe(videoElement);
+    observer.observe(video);
 
     return () => {
-      if (videoElement) observer.unobserve(videoElement);
+      if (video) observer.unobserve(video);
     };
   }, []);
-
-  // Effect to actually trigger play/pause
-  useEffect(() => {
-    const videoElement = videoRef.current;
-    if (!videoElement) return;
-
-    if (isVisible) {
-      // Promise handling prevents "play() failed" errors
-      const playPromise = videoElement.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Auto-play was prevented (often low power mode)
-        });
-      }
-    } else {
-      videoElement.pause();
-    }
-  }, [isVisible]);
 
   return (
     <video
       ref={videoRef}
       src={src}
-      muted
-      loop
-      playsInline
-      preload="metadata" // Only load metadata initially
-      className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 grayscale group-hover:grayscale-0 will-change-transform"
+      muted={true}          // REQUIRED for autoplay
+      playsInline={true}    // REQUIRED for iOS
+      loop={true}
+      preload="auto"        // Aggressively load video data
+      className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 grayscale group-hover:grayscale-0 will-change-transform bg-neutral-900" 
     />
   );
 };
@@ -92,6 +76,7 @@ export const WorkCarousel = () => {
         .animate-scroll {
           animation: scroll-infinite 60s linear infinite;
         }
+        /* Pause on hover to let user watch the video */
         .animate-scroll:hover {
           animation-play-state: paused;
         }
@@ -103,7 +88,6 @@ export const WorkCarousel = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-10 mb-16">
             <div className="flex items-center gap-4">
                 <div className="h-px flex-1 bg-purple-500/30" />
-                {/* ✅ Updated to white per request */}
                 <span className="text-sm font-bold tracking-widest text-white uppercase">
                     Visual Playground
                 </span>
@@ -124,7 +108,6 @@ export const WorkCarousel = () => {
                         className="relative w-[300px] md:w-[500px] aspect-video flex-shrink-0 rounded-[2rem] overflow-hidden border border-purple-500/10 bg-neutral-900 group cursor-pointer shadow-lg transform-gpu"
                     >
                         {item.type === "video" ? (
-                            // ✅ Using the optimized component
                             <OptimizedVideo src={item.src} />
                         ) : (
                             <Image

@@ -19,6 +19,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Naval Sharma | UX Designer",
   description: "Portfolio of Naval Sharma",
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({
